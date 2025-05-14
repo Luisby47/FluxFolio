@@ -1,0 +1,47 @@
+<%= turbo_frame_tag :content, data: { turbo_action: "advance", refresh: "morph" } do %>
+  <%= render "portfolio_header", portfolio: @portfolio %>
+
+  <div class="container mx-auto px-4 py-8">
+    <%= render "analytics" %>
+
+    <div class="mt-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Investments</h2>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <%= button_to refresh_investment_prices_portfolio_path(@portfolio),
+              method: :post, data: { turbo: true },
+              class: "w-full sm:w-48 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 group relative" do %>
+            <div class="flex items-center justify-center whitespace-nowrap">
+              <svg class="w-4 h-4 mr-2 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+              <span>Refresh Prices</span>
+            </div>
+            <span class="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-sm text-white opacity-0 transition before:absolute before:left-1/2 before:top-full before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-gray-900 before:content-[''] group-hover:opacity-100 dark:bg-gray-700">
+              Symbols and data are based on Yahoo Finance.
+            </span>
+          <% end %>
+          <%= link_to new_portfolio_investment_path(@portfolio), data: { turbo_frame: "modal" }, 
+              class: "w-full sm:w-40 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" do %>
+            <div class="flex items-center whitespace-nowrap">
+              <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              New Investment
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <%= render "investments_table", portfolio: @portfolio, investments: @investments %>
+    </div>
+
+    <div class="mt-8">
+      <%= render "portfolio_performance", portfolio: @portfolio %>
+    </div>
+
+    <div class="mt-8">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Notes</h2>
+      <%= render "notes_section", portfolio: @portfolio, notes: @notes %>
+    </div>
+  </div>
+<% end %>

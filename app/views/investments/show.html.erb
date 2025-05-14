@@ -1,0 +1,14 @@
+<%= turbo_frame_tag :content, data: { turbo_action: "advance", refresh: "morph" } do %>
+  <%= render "investment_header", portfolio: @portfolio, investment: @investment %>
+  <div class="container mx-auto px-4 py-8">
+    <%= render "performance", investment: @investment %>
+
+    <div class="mt-8">
+      <%= render "transactions", portfolio: @portfolio, investment: @investment, transactions: @investment.transactions %>
+    </div>
+
+    <div class="mt-8">
+      <%= render "notes_section", portfolio: @portfolio, investment: @investment, notes: @investment.notes %>
+    </div>
+  </div>
+<% end %>

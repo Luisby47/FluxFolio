@@ -1,0 +1,38 @@
+<div class="bg-white shadow dark:bg-gray-800">
+  <div class="container mx-auto px-4 py-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <%= link_to portfolio_path(portfolio), class: "flex items-center space-x-2 text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-300 mb-4" do %>
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          <span>Back to Portfolio</span>
+        <% end %>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white"><%= investment.name %></h1>
+        <div class="mt-2 flex items-center space-x-4">
+          <span class="text-sm text-gray-500 dark:text-gray-400">
+            <%= investment.investment_type&.titleize || 'Type Not Set' %>
+          </span>
+          <span class="text-sm text-gray-500 dark:text-gray-400">
+            <%= investment.status&.titleize || 'Status Not Set' %>
+          </span>
+          <% if investment.exit_target_type.present? %>
+            <span class="text-sm text-gray-500 dark:text-gray-400">
+              Exit Target: <%= investment.exit_target_type&.titleize %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <%= link_to edit_portfolio_investment_path(portfolio, investment), data: { turbo_frame: "modal" }, class: "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" do %>
+          <div class="flex items-center">
+            <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+            Edit Investment
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
