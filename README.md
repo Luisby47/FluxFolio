@@ -1,4 +1,4 @@
-# Floxfolio
+# Fluxfolio
 
 ![Floxfolio](public/icon.svg)
 
@@ -6,7 +6,7 @@ A modern, full-featured investment portfolio tracking application built with Rub
 
 ## Overview
 
-Floxfolio allows users to create and manage investment portfolios containing various types of assets. Track stocks, cryptocurrencies, ETFs, real estate, art, and more in one unified platform. The application enables detailed transaction tracking (buys/sells), note-taking, and portfolio performance analytics.
+Fluxfolio allows users to create and manage investment portfolios containing various types of assets. Track stocks, cryptocurrencies, ETFs, real estate, art, and more in one unified platform. The application enables detailed transaction tracking (buys/sells), note-taking, and portfolio performance analytics.
 
 ## Features
 
@@ -42,8 +42,8 @@ Floxfolio allows users to create and manage investment portfolios containing var
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/floxfolio.git
-cd floxfolio
+git clone https://github.com/Luisby47/fluxfolio.git
+cd fluxfolio
 ```
 
 2. Install Ruby dependencies:
@@ -64,42 +64,14 @@ bin/rails db:migrate
 ```bash
 bin/dev
 ```
-
-5. Visit http://localhost:3000 in your browser
-
-## Development
-
-### Running Tests
+or
 
 ```bash
-bin/rails test
+rails server
 ```
 
-### Code Quality
+5. Visit (http://127.0.0.1:3000) in your browser
 
-This project uses RuboCop with Rails Omakase style guide:
-
-```bash
-bundle exec rubocop
-```
-
-### Docker
-
-Build and run with Docker:
-
-```bash
-docker build -t floxfolio .
-docker run -p 3000:3000 floxfolio
-```
-
-## Deployment
-
-This application is configured for deployment using Kamal:
-
-```bash
-bundle exec kamal setup
-bundle exec kamal deploy
-```
 
 ## License
 
