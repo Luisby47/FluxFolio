@@ -33,7 +33,7 @@ Floxfolio allows users to create and manage investment portfolios containing var
 
 ### Prerequisites
 
-- Ruby 3.3.4
+- Ruby 3.3.8
 - Node.js and Yarn (for JavaScript dependencies)
 - SQLite3 (for development)
 
