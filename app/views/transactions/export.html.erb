@@ -1,13 +1,15 @@
-<%= render "shared/modal", title: "Export Transactions" do %>
+<%= render "shared/modal", title: "Export Transactions", prevent_reload: true do %>
   <div class="space-y-4">
     <div>
       <label for="date-range" class="block text-sm font-medium text-gray-900 dark:text-white">Date Range</label>
       <%= form_with url: export_portfolio_investment_transactions_path(@portfolio, @investment), method: :get, data: { turbo_frame: "export_preview" } do |form| %>
-        <%= form.select :start_date,
-                       options_for_select(@date_range_options.map { |label, date| [label, date.iso8601] }, params[:start_date]),
-                       {},
-                       class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
-                       data: { action: "change->form#submit" } %>
+        <div class="custom-select-wrapper" data-controller="select">
+          <%= form.select :start_date,
+                        options_for_select(@date_range_options.map { |label, date| [label, date.iso8601] }, params[:start_date]),
+                        {},
+                        class: "custom-select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+                        data: { action: "change->form#submit", select_target: "select" } %>
+        </div>
       <% end %>
     </div>
 

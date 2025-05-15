@@ -1,0 +1,83 @@
+<style>
+  /* Custom select styling */
+  .custom-select-wrapper {
+    position: relative;
+  }
+  
+  .custom-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  /* Hover state */
+  .custom-select:hover {
+    border-color: #9ca3af; /* gray-400 */
+  }
+
+  /* Focus state */
+  .custom-select:focus {
+    @apply ring-2 ring-blue-500 border-blue-500 outline-none;
+  }
+
+  /* When value is selected */
+  .custom-select.has-value {
+    color: #111827; /* gray-900 */
+    font-weight: 500;
+  }
+
+  /* For Firefox */
+  .custom-select {
+    text-overflow: ellipsis;
+  }
+
+  /* Dark mode adjustments */
+  .dark .custom-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  }
+
+  .dark .custom-select:hover {
+    border-color: #6b7280; /* gray-500 */
+  }
+
+  .dark .custom-select.has-value {
+    color: #f9fafb; /* gray-50 */
+  }
+
+  /* Mobile device adjustments */
+  @media (max-width: 640px) {
+    .custom-select {
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+  }
+
+  /* Touch device optimization */
+  .touch-device .custom-select {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+  }
+</style>
+
+<script>
+  // Add "has-value" class to selects that have a value on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.custom-select').forEach(function(select) {
+      if (select.value) {
+        select.classList.add('has-value');
+      }
+      
+      select.addEventListener('change', function() {
+        if (this.value) {
+          this.classList.add('has-value');
+        } else {
+          this.classList.remove('has-value');
+        }
+      });
+    });
+  });
+</script> 

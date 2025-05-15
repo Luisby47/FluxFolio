@@ -1,5 +1,5 @@
 # Name of your application. Used to uniquely configure containers.
-service: vesta
+service: Fluxfolio
 
 # Name of the container image.
 image: sandnap/vesta

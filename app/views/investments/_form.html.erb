@@ -26,17 +26,38 @@
 
   <div>
     <%= form.label :investment_type, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= form.select :investment_type, Investment.investment_types.keys.map { |type| [type.titleize, type] }, { include_blank: "Select investment type" }, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <div class="custom-select-wrapper" data-controller="select">
+      <%= form.select :investment_type, 
+          Investment.investment_types.keys.map { |type| [type.titleize, type] }, 
+          { include_blank: "Select investment type" }, 
+          class: "custom-select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+          data: { select_target: "select" }
+      %>
+    </div>
   </div>
 
   <div>
     <%= form.label :status, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= form.select :status, Investment.statuses.keys.map { |status| [status.titleize, status] }, { include_blank: "Select status" }, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <div class="custom-select-wrapper" data-controller="select">
+      <%= form.select :status, 
+          Investment.statuses.keys.map { |status| [status.titleize, status] }, 
+          { include_blank: "Select status" }, 
+          class: "custom-select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+          data: { select_target: "select" }
+      %>
+    </div>
   </div>
 
   <div>
     <%= form.label :exit_target_type, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= form.select :exit_target_type, Investment.exit_target_types.keys.map { |type| [type.titleize, type] }, { include_blank: "Select exit target type" }, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    <div class="custom-select-wrapper" data-controller="select">
+      <%= form.select :exit_target_type, 
+          Investment.exit_target_types.keys.map { |type| [type.titleize, type] }, 
+          { include_blank: "Select exit target type" }, 
+          class: "custom-select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+          data: { select_target: "select" }
+      %>
+    </div>
   </div>
 
   <div>

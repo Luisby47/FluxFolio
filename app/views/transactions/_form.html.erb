@@ -13,13 +13,15 @@
   <% if investment.nil? %>
     <div>
       <%= form.label :investment_id, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-      <%= form.select :investment_id,
-        portfolio.investments.map { |investment| [investment.name, investment.id, data: { current_price: "#{investment.current_unit_price}" }] },
-        { prompt: "Select investment" },
-        autofocus: true,
-        data: { transaction_target: "currentPrice" },
-         class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-      %>
+      <div class="custom-select-wrapper" data-controller="select">
+        <%= form.select :investment_id,
+          portfolio.investments.map { |investment| [investment.name, investment.id, data: { current_price: "#{investment.current_unit_price}" }] },
+          { prompt: "Select investment" },
+          autofocus: true,
+          data: { transaction_target: "currentPrice", select_target: "select" },
+          class: "custom-select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+        %>
+      </div>
     </div>
   <% else %>
     <%= form.hidden_field :investment_id, data: { current_price: "#{investment.current_unit_price}", transaction_target: "currentPrice" } %>
