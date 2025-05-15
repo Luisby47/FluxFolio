@@ -1,22 +1,39 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="chart"
+/**
+ * Chart Controller
+ * 
+ * This Stimulus controller manages chart rendering and behavior in the application.
+ * It supports both doughnut charts (for portfolio allocation) and line charts (for performance tracking).
+ * The controller handles initialization, data formatting, and theme-aware styling.
+ */
 export default class extends Controller {
+  // Elements that can be targeted in the DOM
   static targets = ["canvas"]
+  
+  // Values that can be passed from HTML
   static values = {
-    chartType: String,
-    data: Object,
+    chartType: String, // Type of chart to render ('doughnut' or 'line')
+    data: Object,      // Chart data with labels and values
   }
 
+  /**
+   * Initialize chart when controller connects to the DOM
+   */
   connect() {
     this.initializeChart()
   }
 
+  /**
+   * Create and render the chart with appropriate styling based on theme
+   */
   initializeChart() {
+    // Detect if dark mode is active to adjust styling accordingly
     const isDarkMode = document.documentElement.classList.contains("dark")
     const textColor = isDarkMode ? "#9ca3af" : "#374151"
     const gridColor = isDarkMode ? "#374151" : "#e5e7eb"
 
+    // Chart configuration with theme-aware styling
     const config = {
       type: this.chartTypeValue,
       data: this.chartData,
@@ -36,6 +53,7 @@ export default class extends Controller {
           },
           tooltip: {
             callbacks: {
+              // Format tooltip labels with currency formatting
               label: function (context) {
                 const value = context.raw
                 const total = context.dataset.data.reduce((a, b) => a + b, 0)
@@ -48,6 +66,7 @@ export default class extends Controller {
             },
           },
         },
+        // Scale configuration only applies to line charts
         scales:
           this.chartTypeValue === "line"
             ? {
@@ -65,6 +84,7 @@ export default class extends Controller {
                   },
                   ticks: {
                     color: textColor,
+                    // Format y-axis values as currency
                     callback: function (value) {
                       return new Intl.NumberFormat("en-US", {
                         style: "currency",
@@ -78,12 +98,18 @@ export default class extends Controller {
       },
     }
 
+    // Initialize Chart.js with the canvas element and configuration
     new Chart(this.canvasTarget, config)
   }
 
+  /**
+   * Format chart data based on chart type
+   * @returns {Object} Formatted chart data for Chart.js
+   */
   get chartData() {
     const data = this.dataValue
 
+    // Doughnut chart configuration (used for allocation charts)
     if (this.chartTypeValue === "doughnut") {
       const chartData = {
         labels: data.labels,
@@ -99,6 +125,7 @@ export default class extends Controller {
       return chartData
     }
 
+    // Line chart configuration (used for performance charts)
     if (this.chartTypeValue === "line") {
       const isDarkMode = document.documentElement.classList.contains("dark")
       return {
@@ -117,6 +144,11 @@ export default class extends Controller {
     }
   }
 
+  /**
+   * Generate visually distinct colors for chart segments
+   * @param {number} count - Number of colors needed
+   * @returns {Array} Array of color values
+   */
   generateColors(count) {
     const colors = []
     const baseHues = [210, 330, 120, 45, 275, 175, 15, 300] // Predefined hues for better color distribution

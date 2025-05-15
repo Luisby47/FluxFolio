@@ -1,16 +1,23 @@
+# Seeds.rb - Database Initialization for Fluxfolio
+#
+# This file populates the database with sample data for development and testing.
+# It creates users, portfolios, investments, transactions, and notes to provide
+# a realistic environment for testing the application's functionality.
 
 # Reset database before seeding
+# This ensures a clean slate for the seed data
 puts "Clearing existing data..."
 [Transaction, Investment, Note, NoteDraft, Session, Portfolio, User].each do |model|
   puts "Clearing #{model.name} records..."
   model.destroy_all
 end
 
-# Create Users
+# Create Test Users
+# These accounts can be used to log in and test the application
 puts "Creating users..."
 users = [
   { email: "test1@example.com", password: "Password123!" },
-  { email: "test@example.com", password: "Password123!" },
+  { email: "test@example.com", password: "Password123!" }, # Main test account referenced in README
   { email: "test2@example.com", password: "Password123!" },
   { email: "admin@fluxfolio.com", password: "Admin123!" }
 ]
@@ -23,7 +30,8 @@ created_users = users.map do |user_attrs|
   )
 end
 
-# Create Portfolios
+# Create Sample Portfolios
+# Each user will receive 2-3 randomly selected portfolios
 puts "Creating portfolios..."
 portfolios = [
   { name: "Retirement" },
@@ -47,26 +55,38 @@ created_users.each do |user|
   end
 end
 
-# Create Investments
+# Create Sample Investments
+# Defines a variety of investment types with realistic market data
 puts "Creating investments..."
 investment_data = [
+  # Stocks
   { name: "Apple Inc.", symbol: "AAPL", investment_type: :stock, current_unit_price: 182.52 },
   { name: "Microsoft", symbol: "MSFT", investment_type: :stock, current_unit_price: 420.21 },
   { name: "Amazon", symbol: "AMZN", investment_type: :stock, current_unit_price: 182.41 },
-  { name: "Vanguard S&P 500 ETF", symbol: "VOO", investment_type: :etf, current_unit_price: 470.10 },
-  { name: "iShares Core U.S. Aggregate Bond ETF", symbol: "AGG", investment_type: :bond, current_unit_price: 98.71 },
-  { name: "Fidelity 500 Index Fund", symbol: "FXAIX", investment_type: :mutual_fund, current_unit_price: 173.40 },
   { name: "Tesla", symbol: "TSLA", investment_type: :stock, current_unit_price: 173.60 },
+  
+  # ETFs
+  { name: "Vanguard S&P 500 ETF", symbol: "VOO", investment_type: :etf, current_unit_price: 470.10 },
+  
+  # Bonds
+  { name: "iShares Core U.S. Aggregate Bond ETF", symbol: "AGG", investment_type: :bond, current_unit_price: 98.71 },
+  
+  # Mutual Funds
+  { name: "Fidelity 500 Index Fund", symbol: "FXAIX", investment_type: :mutual_fund, current_unit_price: 173.40 },
+  
+  # Cryptocurrencies
   { name: "Bitcoin", symbol: "BTC", investment_type: :cryptocurrency, current_unit_price: 62345.78 },
   { name: "Ethereum", symbol: "ETH", investment_type: :cryptocurrency, current_unit_price: 3451.23 },
+  
+  # Alternative Investments
   { name: "Rental Property", symbol: nil, investment_type: :real_estate, current_unit_price: 350000.00 },
   { name: "Startup Investment", symbol: nil, investment_type: :private_equity, current_unit_price: 50000.00 }
 ]
 
 created_investments = []
 
+# Assign 3-6 random investments to each portfolio
 created_portfolios.each do |portfolio|
-  # Each portfolio gets 3-6 investments
   portfolio_investments = investment_data.sample(rand(3..6))
   
   portfolio_investments.each do |investment|
@@ -82,9 +102,11 @@ created_portfolios.each do |portfolio|
 end
 
 # Create Transactions
+# Creates a history of buy and sell transactions for each investment
 puts "Creating transactions..."
 created_investments.each do |investment|
   # Initial buy transaction (between 1 year and 3 months ago)
+  # Each investment starts with an initial purchase
   initial_date = rand(90..365).days.ago
   initial_units = rand(1..100)
   initial_price = investment.current_unit_price * (0.7 + rand * 0.6) # 70-130% of current price
@@ -98,6 +120,7 @@ created_investments.each do |investment|
   )
   
   # Add 1-5 more transactions per investment
+  # Creates a realistic transaction history with more buys than sells
   rand(1..5).times do |i|
     transaction_date = rand(1..89).days.ago
     transaction_type = [:buy, :buy, :buy, :sell].sample # More buys than sells
@@ -115,12 +138,14 @@ created_investments.each do |investment|
   end
   
   # Update investment with current price (date after all transactions)
+  # Ensures current pricing data is available
   investment.update!(
     current_unit_price: investment.current_unit_price,
     updated_at: Time.current
   )
   
-  # Add some standalone notes
+  # Add some investment notes
+  # Creates sample notes for investments with varying importance levels
   rand(0..2).times do
     Note.create!(
       notable: investment,
@@ -136,7 +161,8 @@ created_investments.each do |investment|
   end
 end
 
-# Add some portfolio notes
+# Add Portfolio Notes
+# Creates sample notes for portfolios with varying importance levels
 created_portfolios.each do |portfolio|
   rand(1..3).times do
     Note.create!(
@@ -153,6 +179,7 @@ created_portfolios.each do |portfolio|
   end
   
   # Create a note draft
+  # Occasionally creates a draft note to demonstrate the draft functionality
   if rand > 0.7
     NoteDraft.create!(
       notable: portfolio,
@@ -164,6 +191,7 @@ created_portfolios.each do |portfolio|
   end
 end
 
+# Output summary information
 puts "Seed completed successfully!"
 puts "Created #{User.count} users"
 puts "Created #{Portfolio.count} portfolios"

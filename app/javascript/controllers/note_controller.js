@@ -1,34 +1,57 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="note"
+/**
+ * Note Controller
+ * 
+ * This Stimulus controller manages note editing functionality with autosave support.
+ * It handles character counting, validation, draft saving/loading, and status updates.
+ * The controller provides a seamless note-taking experience with automatic background saving.
+ */
 export default class extends Controller {
+  // DOM elements that can be targeted
   static targets = ["content", "charCount", "draftStatus", "discardButton"]
+  
+  // Values that can be passed from HTML
   static values = {
-    maxLength: { type: Number, default: 1000 },
-    draftUrl: String,
-    draftInterval: { type: Number, default: 5000 },
+    maxLength: { type: Number, default: 1000 },  // Maximum character length for notes
+    draftUrl: String,                            // API endpoint for draft operations
+    draftInterval: { type: Number, default: 5000 }, // Autosave interval in milliseconds
   }
 
+  /**
+   * Initialize controller state
+   */
   initialize() {
     this.draftExists = false
   }
 
+  /**
+   * Set up controller when connected to DOM
+   */
   connect() {
     this.updateCharCount()
     this.loadDraft()
     this.startAutoSave()
   }
 
+  /**
+   * Clean up when disconnected from DOM
+   */
   disconnect() {
     if (this.autoSaveInterval) {
       clearInterval(this.autoSaveInterval)
     }
   }
 
+  /**
+   * Update character count display and styling
+   * Shows remaining characters and changes color when approaching limit
+   */
   updateCharCount() {
     const remaining = this.maxLengthValue - this.contentTarget.value.length
     this.charCountTarget.textContent = `${remaining} characters remaining`
 
+    // Change color to red when approaching character limit
     if (remaining < 50) {
       this.charCountTarget.classList.add("text-red-600", "dark:text-red-400")
       this.charCountTarget.classList.remove("text-gray-500", "dark:text-gray-400")
@@ -38,6 +61,10 @@ export default class extends Controller {
     }
   }
 
+  /**
+   * Validate note content for form submission
+   * Checks for empty content and maximum length
+   */
   validateContent() {
     const content = this.contentTarget.value.trim()
     if (content.length === 0) {
@@ -50,6 +77,10 @@ export default class extends Controller {
     this.contentTarget.reportValidity()
   }
 
+  /**
+   * Load saved draft content from the server
+   * Populates form with draft content if available
+   */
   async loadDraft() {
     try {
       const response = await fetch(this.draftUrlValue, {
@@ -75,16 +106,24 @@ export default class extends Controller {
     }
   }
 
+  /**
+   * Start the autosave timer to periodically save drafts
+   */
   startAutoSave() {
     this.autoSaveInterval = setInterval(() => {
       this.saveDraft()
     }, this.draftIntervalValue)
   }
 
+  /**
+   * Save current note content as a draft
+   * Creates new draft or updates existing one
+   */
   async saveDraft() {
     const content = this.contentTarget.value.trim()
     const importance = this.element.querySelector('input[name="note[importance]"]:checked')?.value || 5
 
+    // Don't save empty drafts
     if (!content) return
 
     try {
@@ -119,6 +158,10 @@ export default class extends Controller {
     }
   }
 
+  /**
+   * Discard the current draft and reset form
+   * @param {Event} event - Click event
+   */
   async discardDraft(event) {
     event.preventDefault()
 
@@ -134,6 +177,7 @@ export default class extends Controller {
       })
 
       if (response.ok) {
+        // Reset form
         this.contentTarget.value = ""
         this.element.querySelector('input[name="note[importance]"][value="5"]').checked = true
         this.updateCharCount()
@@ -151,9 +195,14 @@ export default class extends Controller {
     }
   }
 
+  /**
+   * Display draft status message temporarily
+   * @param {string} message - Status message to display
+   */
   updateDraftStatus(message) {
     if (this.hasDraftStatusTarget) {
       this.draftStatusTarget.textContent = message
+      // Clear message after 2 seconds
       setTimeout(() => {
         this.draftStatusTarget.textContent = ""
       }, 2000)

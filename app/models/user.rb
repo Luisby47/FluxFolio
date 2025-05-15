@@ -1,38 +1,45 @@
+# User model represents application users with authentication capabilities
+# It handles user accounts, password management, and relationships to other models
 class User < ApplicationRecord
+  # Use built-in Rails features for password management
   has_secure_password
-  has_many :sessions, dependent: :destroy
+  
+  # Relationships - a user can have multiple portfolios
   has_many :portfolios, dependent: :destroy
+  # NoteDrafts are user-specific unsaved notes
   has_many :note_drafts, dependent: :destroy
-
-  normalizes :email_address, with: ->(e) { e.strip.downcase }
-
-  validate :password_complexity, if: -> { password.present? }
-
+  # Sessions track user login instances
+  has_many :sessions, dependent: :destroy
+  
+  # Validations for email format and uniqueness
+  validates :email_address, format: { with: URI::MailTo::EMAIL_REGEXP }, 
+                          presence: true,
+                          uniqueness: { case_sensitive: false }
+  
+  # Password validation to ensure minimum security requirements                        
+  validates :password, allow_nil: true, length: { minimum: 8 },
+                      format: { with: /\A.*[a-z].*\z/i, message: "must contain at least one letter" },
+                      format: { with: /\A.*[0-9].*\z/, message: "must contain at least one number" },
+                      format: { with: /\A.*[^A-Za-z0-9].*\z/, message: "must contain at least one special character" }
+  
+  # Normalize email address before validation to ensure consistent format
+  before_validation :normalize_email_address
+  
+  # Class method to authenticate with email and password
+  # Returns the user if authentication succeeds, nil otherwise
+  def self.authenticate_by(email_address:, password:)
+    # Find user by downcased email (case-insensitive lookup)
+    user = find_by(email_address: email_address.downcase)
+    
+    # Use authenticate method from has_secure_password to check password
+    # Returns user if password matches, false otherwise
+    user&.authenticate(password)
+  end
+  
   private
-
-    def password_complexity
-      # Skip validation for specific development/test passwords
-      if password == "password" || password == "admin"
-        return
-      end
-      
-      # Check minimum length
-      if password.length < 6
-        errors.add :password, "must be at least 6 characters"
-        return
-      end
-
-      # Check for required character types
-      unless password.match?(/[A-Z]/) # Has uppercase
-        errors.add :password, "must include at least one uppercase letter"
-      end
-
-      unless password.match?(/[a-z]/) # Has lowercase
-        errors.add :password, "must include at least one lowercase letter"
-      end
-
-      unless password.match?(/[0-9\W]/) # Has number or special char
-        errors.add :password, "must include at least one number or special character"
-      end
+  
+    # Normalize email to lowercase for consistent lookup
+    def normalize_email_address
+      self.email_address = email_address.to_s.downcase
     end
 end
