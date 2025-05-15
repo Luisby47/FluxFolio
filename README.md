@@ -72,6 +72,10 @@ rails server
 
 5. Visit (http://127.0.0.1:3000) in your browser
 
+### Documentation on DeepWiki
+
+Visit (https://deepwiki.com/Luisby47/FluxFolio) in your browser
+
 
 ## License
 
