@@ -1,12 +1,14 @@
 # Fluxfolio
 
-![Floxfolio](public/icon.svg)
+![Fluxfolio](public/icon.svg)
 
 A modern, full-featured investment portfolio tracking application built with Ruby on Rails 8.
 
 ## Overview
 
 Fluxfolio allows users to create and manage investment portfolios containing various types of assets. Track stocks, cryptocurrencies, ETFs, real estate, art, and more in one unified platform. The application enables detailed transaction tracking (buys/sells), note-taking, and portfolio performance analytics.
+
+ ![Overview](https://github.com/Luisby47/Fluxfolio/raw/main/overview.PNG)
 
 ## Features
 
@@ -75,6 +77,11 @@ rails server
 ### Documentation on DeepWiki
 
 Visit (https://deepwiki.com/Luisby47/FluxFolio) in your browser
+
+### Login
+
+- User : 'test@example.com'
+- Password: Password123! 
 
 
 ## License
